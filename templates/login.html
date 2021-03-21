@@ -22,13 +22,16 @@
     <div style="width: 60%; float:right; height:600px; ">
     <div id="Login" >
         <h3>Login</h3><br/>
+        <form action="/Login"method="POST">
             <div class="form-group">
+                
               <label for="exampleInput2">Mail</label>
-              <input type="text" class="form-control" id="mail" placeholder="Enter the name" style="width:50%;">
+              <input type="text" class="form-control" id="mail" name="mail" placeholder="Enter the name" style="width:50%;">
               <label for="exampleInput2">Password</label>
-              <input type="text" class="form-control" id="password" placeholder="Enter the name" style="width:50%;">
+              <input type="text" class="form-control" id="password" name="password" placeholder="Enter the name" style="width:50%;">
             </div>
-          <button class="btn btn-success" onclick="Login()">Login</button><br/><br/>
+          <button class="btn btn-success" type="submit">Login</button><br/><br/>
+        </form>
           <div id="res" style="width: 30%;">
             <h3 id="title_1"></h5>
             <div id="res_1"></div><br/>

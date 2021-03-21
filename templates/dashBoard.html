@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <title>API-Examples</title>
+
+    <style>
+      body{
+        background-color: rgb(31, 118, 153);
+      }
+      #CenterDIV {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: rgba(255, 255, 255, 0.75);
+            width: 100%;
+            height: 100%;    
+            padding-top: 100px;
+            display: none;
+        }
+        .divFloat {
+            margin: 0 auto;
+            background-color: #FFF;
+            color: #000;
+            width: 600px;
+            height: auto;
+            padding: 20px;
+            border: solid 1px #999;
+            -webkit-border-radius: 3px;
+            -webkit-box-orient: vertical;
+            -webkit-transition: 200ms -webkit-transform;
+            box-shadow: 0 4px 23px 5px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.15);
+            display: block;
+        }
+        .btClickHere {
+            font: inherit;
+            background-color: #587898;
+            color: #FFF;
+            border: solid 1px #587898;
+            -moz-border-radius: 0 7px 7px 0;
+            -webkit-border-radius: 0 7px 7px 0;
+            border-radius: 0 7px 7px 0;
+            cursor: pointer;
+        }        
+        .btClose {
+            margin: 0 auto;
+            background-color: #FFF;
+            font-weight: bold;
+            color: red;
+            border: none;
+            width: auto; 
+            float: right;
+            clear: both;
+            cursor: pointer; 
+        }
+        .btGetPass {
+            color: #FFF;
+            padding: 2px 4px;
+            width: 150px;
+            display: block;    
+            background-color: #FF780B;
+            border: solid 1px #FF780B;
+            border-top-right-radius: 10px 20px;
+            border-bottom-right-radius: 10px 20px;
+            border-bottom-left-radius: 10px 20px;
+            border-top-left-radius: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">CatchPay</a>
+          </div>
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#">Page 1</a></li>
+            <li><a href="#">Page 2</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a id="btClick"><span class="glyphicon glyphicon-bitcoin"></span> Deposit</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> LogOut</a></li>
+          </ul>
+        </div>
+      </nav>
+    <div style="width: 60%; float:right; height:600px; ">
+        
+        <div id="Dash" style="padding:5%;background-color: #3033366e;width: 50%; border-radius: 3%;">
+            <H2>Welcome, {{name}}</H2>
+            <div>
+                <h3>Balance</h3>
+                <div id="balance">4000</div>
+            </div>
+            <div style="margin: 5%;" >
+                <button class="btn btn-success" type="submit">Send</button> 
+                <button class="btn btn-success" type="submit">Request</button> 
+            </div>
+            
+        </div>
+        <div id="Transactions" style="padding:5%;margin-Top: 3%;background-color: #3033366e;width: 50%; border-radius: 3%;">
+            <H2>Welcome, {{name}}</H2>
+            <div>
+                to:
+                type:
+                amount:
+                account:
+            </div>
+        </div>
+        
+    </div>
+    <form action="{{ url_for('SignUp')}}" method="get">
+        <button class="btn btn-success" type="submit">Signup</button> 
+    </form>
+        <div id="CenterDIV">
+            <div class="divFloat">
+                <input type="button" id="btClose" class="btClose" value="Close (x)" />
+                <p style="text-align: left; padding:20px 0;">Enter amount to deposit: 
+                    <input type="text" id="amount" style="width:300px;" maxlength="100" />
+                </p>
+                <p><input type="button" class="btGetPass" id="deposit" value="Deposit" /></p>
+            </div>
+        </div>
+</body>
+<script>
+    $(document).ready(function(){ 
+        var token = localStorage.getItem("Token");  
+        console.log("token");
+        tempDict = {
+            Uid:'{{Uid}}',
+        }
+        $.ajax({
+            url: "/GetUserDetail", 
+            type:"GET",
+            data:tempDict,
+            error: function(data){
+            console.log("Server Error" , data);
+            console.log(data.getAllResponseHeaders());
+            },
+            success: function(data){    
+                    document.getElementById("balance").innerHTML = data["result"]["Balance"];
+                    console.log(data)
+            }
+        });
+        $('#btClick').click(function () {
+            $('#CenterDIV').css('display', 'block');
+        });
+        $('#btClose').click(function () {
+            $('#CenterDIV').css('display', 'none');
+        });
+
+        $('#deposit').click(function () {
+            amount = document.getElementById("amount").value;
+            tempDict = {
+                Uid:'{{Uid}}',
+                amount:amount
+            }
+            $.ajax({
+            url: "/Deposit", 
+            type:"GET",
+            data:tempDict,
+            error: function(data){
+            console.log("Server Error" , data);
+            console.log(data.getAllResponseHeaders());
+            },
+            success: function(data){    
+                    if(data["result"]["status"]==200)
+                    {   document.getElementById("balance").innerHTML = data["result"]["Balance"];
+                        $('#CenterDIV').css('display', 'none');
+                    }
+                    else{
+                        $('#CenterDIV').css('display', 'none');
+                    }
+                    console.log(data)
+            }
+        });
+        });
+
+    });
+</script>
+
+
+</html>

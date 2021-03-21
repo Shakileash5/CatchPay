@@ -14,7 +14,7 @@ userDict = {}
 @app.route('/register',methods=["GET"])
 def register():
     try:
-        data = dict(request.args)
+        data = dict(request.form)
         uname = data["uname"]
         mail = data["mail"]
         password = data["password"]
@@ -38,14 +38,15 @@ def register():
         if res == -1:
             return jsonify({"result":"Email Already exists"})
         send_mail(mail,uname,0)
-        return jsonify({"result":"succesfully"})
+        return render_template("dashBoard.html",Uid=Uid,id=upiId,name=uname)
     except:
         return jsonify({"result":"400 something went wrong"})
 
-@app.route("/Login",methods=["GET"])
+@app.route("/Login",methods=["GET","POST"])
 def Login():
         
-        data = dict(request.args)
+        data = dict(request.form)
+        print(request.form,request.data)
         mail = data["mail"]
         password = data["password"]
         userDatas = read_data()
@@ -54,7 +55,7 @@ def Login():
         for i in userDatas:
             if i[1]==mail:
                 if i[2] == password:
-                    return jsonify({"result":"succesfully"})
+                    return render_template("dashBoard.html",Uid=i[3],id=i[4],name=i[0])
         return jsonify({"result":"Check your id"})
 
 
@@ -91,6 +92,29 @@ def changePassword():
         return jsonify({"result":"Unsuccesfully"}) 
     except:
         return jsonify({"result":"400 something went wrong"})
+
+@app.route("/GetUserDetail",methods=["GET"])
+def GetUserDetail():
+    data = dict(request.args)
+    print(data["Uid"])
+    Uid = data["Uid"]
+    UData = read_json_Uid(Uid)
+    return jsonify({"result":UData})
+
+@app.route("/Deposit",methods=["GET","POST"])
+def deposit():
+    data = dict(request.args)
+    print(data["Uid"])
+    Uid = data["Uid"]
+    amount = data["amount"]
+    UData = read_json_Uid(Uid)
+    res = update_json(Uid,"Balance",UData["Balance"]+int(amount))
+    bal = UData["Balance"]+int(amount) 
+    if res!=-1:
+       return jsonify({"result":{"Balance":UData["Balance"],"status":200}})
+    return jsonify({"result":{"status":400}})
+        
+
 
 @app.route("/",methods=["GET"])
 def home():

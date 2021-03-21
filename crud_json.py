@@ -14,7 +14,9 @@ def read_json():
     return
 
 def read_json_Uid(Uid):
+    read_json()
     keys = userDetails.keys()
+    print(keys,"keys\n")
     if Uid not in keys:
         return -1
     return userDetails[Uid]

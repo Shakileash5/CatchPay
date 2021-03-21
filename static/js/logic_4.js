@@ -24,6 +24,7 @@ function ajaxCall(apiurl,title,id,title_id,state=0){
       }
       else{
         console.log(id)
+        
         document.getElementById(title_id).innerHTML = title;
         document.getElementById(id).style.display = "block";
         document.getElementById(id).src = data['result'];
