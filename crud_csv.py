@@ -13,9 +13,8 @@ def read_data():
                 data.append(row)
     print(data)
     return data
-        # writing the data rows 
-
-
+        
+# writing the data rows 
 def writeData(uname,mail,password,Uid,upiId):
 
     for i in data:
@@ -34,6 +33,7 @@ def writeData(uname,mail,password,Uid,upiId):
 #read_data()
 #writeData("shakiladawd3","feaawad","atshaya123")
 
+# update the data 
 def update(uname,mail,password):
     for i in data:
         if mail == i[1]:
