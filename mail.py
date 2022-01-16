@@ -2,9 +2,9 @@ import smtplib, ssl
 
 port = 465  # For SSL
 smtp_server = "smtp.gmail.com"
-sender_email = "shakileash2000@gmail.com"  # Enter your address
-receiver_email = "sirenatechnology@gmail.com"  # Enter receiver address
-password = "vvnurinqqtagonij"
+sender_email = ""  # Enter your address
+receiver_email = ""  # Enter receiver address
+password = ""
 messageConfirm = """\
 Subject: Confirmation mail
 
@@ -24,5 +24,3 @@ def send_mail(reciever_mail,msg,flag):
     with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
         server.login(sender_email, password)
         server.sendmail(sender_email, reciever_mail, message)
-
-#send_mail("atshaya1699@gmail.com","BTC")
